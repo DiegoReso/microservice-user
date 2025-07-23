@@ -3,9 +3,13 @@ package com.reso.usuario.business;
 import com.reso.usuario.business.converter.UserConverter;
 import com.reso.usuario.business.dto.UserDTO;
 import com.reso.usuario.infrascture.entity.User;
+import com.reso.usuario.infrascture.exceptions.ConflictException;
+import com.reso.usuario.infrascture.exceptions.ResourceNotFoundException;
 import com.reso.usuario.infrascture.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 @Service
 @RequiredArgsConstructor
@@ -13,13 +17,32 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserConverter userConverter;
+    private final PasswordEncoder passwordEncoder;
 
     public UserDTO insertUser(UserDTO userDTO){
+        emailExists(userDTO.getEmail());
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         User user = userConverter.userDTOToUser(userDTO);
         user = userRepository.save(user);
         return userConverter.userToUserDTO(user);
     }
 
+    public void emailExists(String email){
+        try{
+            if(userRepository.existsByEmail(email)){
+                throw new ConflictException("Email ja cadastrado!" + email);
+            }
+        }catch(Exception e){
+            throw new ConflictException("Email ja cadastrado!" + e.getCause());
+        }
+    }
 
+    public UserDTO findUserByEmail(String email){
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Email nao encontrado " + email));
+        return userConverter.userToUserDTO(user);
+    }
 
+    public void deleteUserByEmail(String email){
+        userRepository.deleteUserByEmail(email);
+    }
 }

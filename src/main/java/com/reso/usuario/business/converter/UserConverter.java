@@ -54,6 +54,7 @@ public class UserConverter {
                 .street(addressDTO.getStreet())
                 .city(addressDTO.getCity())
                 .zipCode(addressDTO.getZipCode())
+                .state(addressDTO.getState())
                 .number(addressDTO.getNumber())
                 .complement(addressDTO.getComplement())
                 .build();
@@ -64,6 +65,7 @@ public class UserConverter {
                 .street(address.getStreet())
                 .city(address.getCity())
                 .zipCode(address.getZipCode())
+                .state(address.getState())
                 .number(address.getNumber())
                 .complement(address.getComplement())
                 .build();
