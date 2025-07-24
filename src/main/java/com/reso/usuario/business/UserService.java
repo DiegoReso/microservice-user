@@ -6,6 +6,7 @@ import com.reso.usuario.infrascture.entity.User;
 import com.reso.usuario.infrascture.exceptions.ConflictException;
 import com.reso.usuario.infrascture.exceptions.ResourceNotFoundException;
 import com.reso.usuario.infrascture.repository.UserRepository;
+import com.reso.usuario.infrascture.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserConverter userConverter;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     public UserDTO insertUser(UserDTO userDTO){
         emailExists(userDTO.getEmail());
@@ -44,5 +46,13 @@ public class UserService {
 
     public void deleteUserByEmail(String email){
         userRepository.deleteUserByEmail(email);
+    }
+
+    public UserDTO updateDataUser(String token, UserDTO userDTO){
+        String email = jwtUtil.extractUsername(token.substring(7));
+        userDTO.setPassword(userDTO.getPassword() != null ? passwordEncoder.encode(userDTO.getPassword()) : null);
+        User userEntity = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Email nao localizado!"));
+        User user = userConverter.updateUser(userDTO, userEntity);
+        return userConverter.userToUserDTO(userRepository.save(user));
     }
 }
