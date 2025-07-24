@@ -62,6 +62,7 @@ public class UserConverter {
 
     public AddressDTO toAddressDTO(Address address) {
         return AddressDTO.builder()
+                .id(address.getId())
                 .street(address.getStreet())
                 .city(address.getCity())
                 .zipCode(address.getZipCode())
@@ -79,6 +80,7 @@ public class UserConverter {
 
     public PhoneDTO toPhonesDTO(Phone phone) {
         return PhoneDTO.builder()
+                .id(phone.getId())
                 .number(phone.getNumber())
                 .build();
     }
@@ -91,6 +93,25 @@ public class UserConverter {
                 .password(userDTO.getPassword() != null ?  userDTO.getPassword() : entity.getPassword())
                 .addresses(entity.getAddresses())
                 .phones(entity.getPhones())
+                .build();
+    }
+
+    public Address updateAddress(AddressDTO addressDTO, Address entity){
+        return Address.builder()
+                .id(entity.getId())
+                .street(addressDTO.getStreet() != null ?   addressDTO.getStreet() : entity.getStreet())
+                .city(addressDTO.getCity() != null ?  addressDTO.getCity() : entity.getCity())
+                .zipCode(addressDTO.getZipCode() != 0 ? addressDTO.getZipCode() : entity.getZipCode())
+                .state(addressDTO.getState() != null ? addressDTO.getState() : entity.getState())
+                .number(addressDTO.getNumber() != 0 ? addressDTO.getNumber() : entity.getNumber())
+                .complement(addressDTO.getComplement() != null ? addressDTO.getComplement() : entity.getComplement())
+                .build();
+    }
+
+    public Phone updatePhone(PhoneDTO phoneDTO, Phone entity){
+        return Phone.builder()
+                .id(entity.getId())
+                .number(phoneDTO.getNumber() != 0 ? phoneDTO.getNumber() : entity.getNumber())
                 .build();
     }
 }
