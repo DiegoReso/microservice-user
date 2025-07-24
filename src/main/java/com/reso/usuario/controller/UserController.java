@@ -1,6 +1,8 @@
 package com.reso.usuario.controller;
 
 import com.reso.usuario.business.UserService;
+import com.reso.usuario.business.dto.AddressDTO;
+import com.reso.usuario.business.dto.PhoneDTO;
 import com.reso.usuario.business.dto.UserDTO;
 import com.reso.usuario.infrascture.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -44,4 +46,20 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping()
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO,
+                                              @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(userService.updateDataUser(token, userDTO));
+    }
+
+    @PutMapping("/address")
+    public ResponseEntity<AddressDTO> updateAddress(@RequestBody AddressDTO addressDTO, @RequestParam("id") Long id){
+        return ResponseEntity.ok(userService.updateAddress(id,addressDTO));
+    }
+
+    @PutMapping("/phone")
+    public ResponseEntity<PhoneDTO> updatePhone(@RequestBody PhoneDTO phoneDTO, @RequestParam("id") Long id){
+        return ResponseEntity.ok(userService.updatePhone(id,phoneDTO));
+    }
 }
+
