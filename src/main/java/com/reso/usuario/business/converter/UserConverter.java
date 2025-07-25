@@ -114,4 +114,23 @@ public class UserConverter {
                 .number(phoneDTO.getNumber() != 0 ? phoneDTO.getNumber() : entity.getNumber())
                 .build();
     }
+
+    public Address toAddressWithUserId(AddressDTO addressDTO, Long idUser ){
+        return Address.builder()
+                .street(addressDTO.getStreet())
+                .city(addressDTO.getCity())
+                .zipCode(addressDTO.getZipCode())
+                .state(addressDTO.getState())
+                .number(addressDTO.getNumber())
+                .complement(addressDTO.getComplement())
+                .user_id(idUser)
+                .build();
+    }
+
+    public Phone toPhoneWithUSerId(PhoneDTO phoneDTO, Long idUser){
+        return Phone.builder()
+                .number(phoneDTO.getNumber())
+                .user_id(idUser)
+                .build();
+    }
 }

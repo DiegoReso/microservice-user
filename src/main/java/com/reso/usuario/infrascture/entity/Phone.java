@@ -19,5 +19,7 @@ public class Phone {
     private Long id;
     @Column(name = "number", length = 15)
     private int number;
+    @Column(name = "users_id")
+    private Long user_id;
 
 }

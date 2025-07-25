@@ -30,4 +30,6 @@ public class Address {
     private int number;
     @Column(name = "complement", length = 100)
     private String complement;
+    @Column(name = "users_id")
+    private Long user_id;
 }
