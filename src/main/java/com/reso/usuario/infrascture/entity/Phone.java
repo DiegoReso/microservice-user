@@ -2,6 +2,7 @@ package com.reso.usuario.infrascture.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "phone")
+@Table(name = "phones")
+@Builder
 public class Phone {
 
     @Id
@@ -17,5 +19,7 @@ public class Phone {
     private Long id;
     @Column(name = "number", length = 15)
     private int number;
+    @Column(name = "users_id")
+    private Long user_id;
 
 }
