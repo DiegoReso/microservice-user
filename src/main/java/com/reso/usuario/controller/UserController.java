@@ -34,14 +34,14 @@ public class UserController {
         return "Bearer " + jwtUtil.generateToken(authentication.getName());
     }
 
-    @GetMapping("/{email}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable String email){
+    @GetMapping()
+    public ResponseEntity<UserDTO> getUser(@RequestParam("email") String email){
         UserDTO userByEmail = userService.findUserByEmail(email);
         return ResponseEntity.ok(userByEmail);
     }
 
-    @DeleteMapping()
-    public ResponseEntity<Void> deleteUser(@RequestParam("email") String email){
+    @DeleteMapping("/{email}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String email){
         userService.deleteUserByEmail(email);
         return ResponseEntity.noContent().build();
     }
